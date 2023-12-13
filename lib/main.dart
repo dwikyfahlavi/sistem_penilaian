@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistem_penilaian/ui/login_activity.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,53 +13,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.black,
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(fontSize: 30, color: Colors.black),
+          titleSmall: TextStyle(fontSize: 20, color: Colors.black),
+          bodyMedium: TextStyle(fontSize: 15, color: Colors.black),
+        ),
       ),
-      home: LoginPage(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
-
-  final GlobalKey<FormState> key = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
   Widget build(BuildContext context) {
-    return Form(
-      key: key,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Column(
-          children: [
-            const Text('Login Page'),
-            const SizedBox(
-              height: 16.0,
-            ),
-            TextFormField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                hintText: 'Silahkan masukkan email Anda',
-              ),
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            TextFormField(
-              controller: passwordController,
-              decoration: const InputDecoration(
-                hintText: 'Silahkan masukkan password Anda',
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return const LoginActivity();
   }
 }
