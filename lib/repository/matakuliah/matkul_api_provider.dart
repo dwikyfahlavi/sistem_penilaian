@@ -32,10 +32,10 @@ class MatkulApiProvider {
     }
   }
 
-  Future<List<Penilaian>> getNilai(String bearerToken) async {
+  Future<List<Penilaian>> getNilai(int id, String bearerToken) async {
     try {
       Response<List<dynamic>> response =
-          await _dio.get('nilai', options: getOption(bearerToken));
+          await _dio.get('nilai/peserta/$id', options: getOption(bearerToken));
       return response.data!.map((data) => Penilaian.fromJson(data)).toList();
     } catch (error) {
       return [Penilaian.withError(_handleError(error as DioException))];

@@ -532,7 +532,7 @@ class _UserActivityState extends State<UserActivity> {
                                         Text(
                                           bloc.ipkModel?.first.ipKelulusan
                                                   .toString() ??
-                                              'Belum di ada',
+                                              'Belum ada',
                                           style: const TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.w600),

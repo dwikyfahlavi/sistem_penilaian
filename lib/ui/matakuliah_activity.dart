@@ -24,7 +24,7 @@ class _MataKuliahActivityState extends State<MataKuliahActivity> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await bloc.getMatkul(widget.user!.token!);
       if (!widget.isPanitia) {
-        await bloc.getNilai(widget.user!.token!);
+        await bloc.getNilai(widget.user!.id!, widget.user!.token!);
         await bloc.getIpkUser(widget.user!.token!);
       }
     });
@@ -66,7 +66,7 @@ class _MataKuliahActivityState extends State<MataKuliahActivity> {
                             ),
                           ),
                         ),
-                        if (matkul.length == index + 1)
+                        if (matkul.length == index + 1 && !widget.isPanitia)
                           Container(
                             margin: const EdgeInsets.only(top: 20),
                             child: Row(
@@ -83,7 +83,7 @@ class _MataKuliahActivityState extends State<MataKuliahActivity> {
                                   bloc.listIpk.isNotEmpty
                                       ? bloc.listIpk.first.ipKelulusan
                                           .toString()
-                                      : 'Belum di ada',
+                                      : 'Belum ada',
                                   style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.w600),
@@ -194,102 +194,114 @@ class _MataKuliahActivityState extends State<MataKuliahActivity> {
 
   onClickMatkul(MataKuliah matkul) {
     if (!widget.isPanitia) {
-      for (var nilai in bloc.listNilai!) {
-        if (matkul.nama == nilai.materiKU) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Penilaian'),
-                  content: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "Mata Kuliah :",
-                          ),
-                          Text(
-                            nilai.materiKU!,
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: const Divider(thickness: 2, height: 1),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "Nilai Pretest :",
-                          ),
-                          Text(
-                            nilai.nilaiPretest!.toString(),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: const Divider(thickness: 2, height: 1),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "Mata Posttest :",
-                          ),
-                          Text(
-                            nilai.nilaiPosttest!.toString(),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: const Divider(thickness: 2, height: 1),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "Bobot :",
-                          ),
-                          Text(
-                            nilai.bobot!.toString(),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: const Divider(thickness: 2, height: 1),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "Predikat :",
-                          ),
-                          Text(
-                            nilai.nilaiHuruf!,
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: const Divider(thickness: 2, height: 1),
-                      ),
-                    ],
-                  ),
-                );
-              });
+      if (bloc.listNilai!.isEmpty) {
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return const AlertDialog(
+                  title: Text('Penilaian'),
+                  content: Center(
+                    child: Text('Data Nilai Belum Ada'),
+                  ));
+            });
+      } else {
+        for (var nilai in bloc.listNilai!) {
+          if (matkul.nama == nilai.materiKU) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Penilaian'),
+                    content: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              "Mata Kuliah :",
+                            ),
+                            Text(
+                              nilai.materiKU!,
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: const Divider(thickness: 2, height: 1),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              "Nilai Pretest :",
+                            ),
+                            Text(
+                              nilai.nilaiPretest!.toString(),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: const Divider(thickness: 2, height: 1),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              "Mata Posttest :",
+                            ),
+                            Text(
+                              nilai.nilaiPosttest!.toString(),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: const Divider(thickness: 2, height: 1),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              "Bobot :",
+                            ),
+                            Text(
+                              nilai.bobot!.toString(),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: const Divider(thickness: 2, height: 1),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              "Predikat :",
+                            ),
+                            Text(
+                              nilai.nilaiHuruf!,
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: const Divider(thickness: 2, height: 1),
+                        ),
+                      ],
+                    ),
+                  );
+                });
+          }
         }
       }
     } else {

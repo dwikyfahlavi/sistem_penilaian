@@ -67,8 +67,8 @@ class MataKuliahBloc {
     return response;
   }
 
-  getNilai(String token) async {
-    List<Penilaian> response = await _repository.getNilai(token);
+  getNilai(int id, String token) async {
+    List<Penilaian> response = await _repository.getNilai(id, token);
     listNilai = response;
   }
 

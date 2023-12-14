@@ -15,8 +15,8 @@ class MatkulRepository {
     return _apiProvider.updateMatkul(name, id, token, isDelete);
   }
 
-  Future<List<Penilaian>> getNilai(String token) {
-    return _apiProvider.getNilai(token);
+  Future<List<Penilaian>> getNilai(int id, String token) {
+    return _apiProvider.getNilai(id, token);
   }
 
   Future<List<IpkModel>> getIpkUser(String token) {
